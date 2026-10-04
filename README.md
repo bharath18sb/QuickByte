@@ -167,30 +167,32 @@ python smoke_test.py
 ## 📸 Screenshots
 
 Screenshots of the application will be added here.
+## 📸 Screenshots
 
 ### 🏠 Home Page
 
-<!-- Add screenshot here -->
+![QuickByte Home](screenshots/home.png)
 
 ### 🍽️ Restaurant & Menu
 
-<!-- Add screenshot here -->
+![Restaurant Menu](screenshots/restaurant.png)
 
 ### 🛒 Shopping Cart
 
-<!-- Add screenshot here -->
+![Shopping Cart](screenshots/cart.png)
 
 ### 💳 Checkout
 
-<!-- Add screenshot here -->
+![Checkout](screenshots/checkout.png)
 
-### 📦 Order Tracking
+### 📦 Orders & Tracking
 
-<!-- Add screenshot here -->
+![Orders](screenshots/orders.png)
 
 ### 🔐 Admin Dashboard
 
-<!-- Add screenshot here -->
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
 
 ---
 
