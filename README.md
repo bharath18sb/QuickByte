@@ -1,74 +1,162 @@
-# 🍔 Quickbyte — Food Delivery Web App
+# 🍔 QuickByte — Food Delivery Web App
 
-A simple, responsive food-delivery web application built with **Python, Flask,
-SQLite, HTML, CSS and JavaScript**, implementing the Quickbyte PRD (v1.0).
+QuickByte is a full-stack food delivery web application built with **Python, Flask, SQLite, HTML, CSS, and JavaScript**.
 
-Customers can browse restaurants, view menus, search food, manage a cart,
-checkout (Cash on Delivery) and track orders. Admins can manage restaurants,
-food items, categories and orders from a dedicated panel.
+The application allows customers to discover restaurants, browse menus, search for food, manage their cart, place Cash on Delivery orders, and track their orders. It also includes a dedicated admin panel for managing restaurants, food items, categories, and orders.
 
 ---
 
 ## ✨ Features
 
-**Customer**
-- Register / login / logout (session auth, hashed passwords)
-- Home with categories, featured restaurants and popular dishes
-- Browse & filter restaurants, view restaurant menus and food details
-- Search dishes by name, cuisine or restaurant
-- Session cart: add, increase/decrease quantity, remove (live AJAX totals)
-- Checkout with delivery details + Cash on Delivery
-- Order confirmation, order history and live status timeline
+### 👤 Customer
 
-**Admin**
-- Separate admin login
-- Dashboard with totals (customers, restaurants, food, orders, revenue)
-- Manage restaurants (add / edit / show-hide)
-- Manage food items (add / edit / show-hide)
-- Manage categories (add / delete)
-- View orders and update order status
+- Register, login, and logout
+- Session-based authentication
+- Password hashing
+- Browse food categories
+- Browse and filter restaurants
+- View restaurant menus and food details
+- Search dishes by name, cuisine, or restaurant
+- Session-based shopping cart
+- Add, increase, decrease, and remove cart items
+- Live cart totals using AJAX
+- Checkout with delivery details
+- Cash on Delivery
+- Order confirmation
+- Order history
+- Order status timeline
 
-**Security & UX**
-- Password hashing (Werkzeug)
-- Session-based auth + admin authorization
-- CSRF protection on all state-changing requests
-- Parameterised SQL (injection-safe)
+### 🔐 Admin
+
+- Separate admin authentication
+- Admin dashboard with:
+  - Customers
+  - Restaurants
+  - Food items
+  - Orders
+  - Revenue
+- Add and edit restaurants
+- Show/hide restaurants
+- Add and edit food items
+- Show/hide food items
+- Add and delete categories
+- View customer orders
+- Update order status
+
+### 🛡️ Security & UX
+
+- Password hashing using Werkzeug
+- Session-based authentication
+- Admin authorization
+- CSRF protection for state-changing requests
+- Parameterized SQL queries
 - User-specific order access
-- Responsive design (mobile / tablet / desktop), orange theme `#FF5A1F`
-- Real food/restaurant photos with an automatic local placeholder fallback
+- Responsive design for mobile, tablet, and desktop
+- Orange-themed UI (`#FF5A1F`)
+- Real food and restaurant images
+- Automatic local placeholder fallback
 
 ---
 
-## 🚀 Getting started
+## 🛠️ Tech Stack
+
+### Frontend
+
+- HTML5
+- CSS3
+- JavaScript
+- Jinja2 Templates
+- AJAX
+
+### Backend
+
+- Python
+- Flask
+- Werkzeug
+
+### Database
+
+- SQLite
+
+### Testing
+
+- Python-based end-to-end smoke test
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
 
 ```bash
-# 1. (optional) create a virtual environment
+git clone https://github.com/YOUR_USERNAME/QuickByte.git
+cd QuickByte
+```
+
+### 2. Create a virtual environment
+
+```bash
 python -m venv venv
-venv\Scripts\activate        # Windows
-# source venv/bin/activate   # macOS/Linux
+```
 
-# 2. install dependencies
+### 3. Activate the virtual environment
+
+#### Windows
+
+```bash
+venv\Scripts\activate
+```
+
+#### macOS / Linux
+
+```bash
+source venv/bin/activate
+```
+
+### 4. Install dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-# 3. run the app  (creates & seeds database.db on first run)
+### 5. Run the application
+
+```bash
 python app.py
 ```
 
-Then open **http://127.0.0.1:5000**
+The application will create and seed the SQLite database on first run.
 
-### Demo accounts
-| Role     | Email                  | Password  |
-|----------|------------------------|-----------|
-| Customer | demo@quickbyte.com     | demo123   |
-| Admin    | admin@quickbyte.com    | admin123  |
+Open:
 
-Admin panel: **http://127.0.0.1:5000/admin/login**
+```text
+http://127.0.0.1:5000
+```
 
 ---
 
-## 🧪 Tests
+## 🔑 Demo Accounts
 
-An end-to-end smoke test (uses a throwaway DB) exercises the full flow:
+| Role | Email | Password |
+|------|-------|----------|
+| Customer | `demo@quickbyte.com` | `demo123` |
+| Admin | `admin@quickbyte.com` | `admin123` |
+
+### Admin Panel
+
+```text
+http://127.0.0.1:5000/admin/login
+```
+
+> These credentials are intended only for local/demo use.
+
+---
+
+## 🧪 Testing
+
+QuickByte includes an end-to-end smoke test that uses a throwaway database and exercises the main application flow.
+
+Run:
 
 ```bash
 python smoke_test.py
@@ -76,34 +164,116 @@ python smoke_test.py
 
 ---
 
-## 📁 Project structure
+## 📸 Screenshots
 
-```
+Screenshots of the application will be added here.
+
+### 🏠 Home Page
+
+<!-- Add screenshot here -->
+
+### 🍽️ Restaurant & Menu
+
+<!-- Add screenshot here -->
+
+### 🛒 Shopping Cart
+
+<!-- Add screenshot here -->
+
+### 💳 Checkout
+
+<!-- Add screenshot here -->
+
+### 📦 Order Tracking
+
+<!-- Add screenshot here -->
+
+### 🔐 Admin Dashboard
+
+<!-- Add screenshot here -->
+
+---
+
+## 📁 Project Structure
+
+```text
 Food/
-├── app.py              # app factory, CSRF, context processors, error handlers
-├── db.py               # SQLite connection + schema
-├── seed.py             # demo data (users, categories, restaurants, food)
-├── helpers.py          # auth decorators, cart logic, CSRF helpers
-├── requirements.txt
-├── smoke_test.py
+├── app.py                  # Flask application entry point
+├── db.py                   # SQLite connection and database schema
+├── seed.py                 # Demo data and database seeding
+├── helpers.py              # Authentication, cart and CSRF helpers
+├── requirements.txt        # Python dependencies
+├── smoke_test.py           # End-to-end smoke test
+│
 ├── routes/
-│   ├── auth.py         # register / login / logout
-│   ├── main.py         # home, restaurants, food, search, cart
-│   ├── orders.py       # checkout, place order, history, tracking
-│   └── admin.py        # admin login, dashboard, CRUD, orders
-├── templates/          # Jinja2 templates (+ templates/admin/)
+│   ├── __init__.py
+│   ├── auth.py             # Registration, login and logout
+│   ├── main.py             # Home, restaurants, food, search and cart
+│   ├── orders.py           # Checkout, orders and tracking
+│   └── admin.py            # Admin dashboard and management
+│
+├── templates/
+│   ├── admin/              # Admin dashboard templates
+│   └── ...                 # Customer-facing templates
+│
 └── static/
-    ├── css/style.css
-    └── js/main.js
+    ├── css/
+    │   └── style.css
+    └── js/
+        └── main.js
 ```
 
 ---
 
 ## ⚙️ Configuration
 
-- `QUICKBYTE_SECRET` — Flask secret key (set in production).
-- `QUICKBYTE_DB` — override the SQLite file path (used by the smoke test).
+QuickByte supports the following environment variables:
 
-## 🔮 Future features
-Online payments, coupons, reviews & ratings, favourites, notifications,
-delivery-partner system and live GPS tracking.
+| Variable | Description |
+|----------|-------------|
+| `QUICKBYTE_SECRET` | Flask secret key. Set this in production. |
+| `QUICKBYTE_DB` | Optional SQLite database path. Used by the smoke test. |
+
+For production, use environment variables instead of hardcoding sensitive configuration.
+
+---
+
+## 🔒 Security
+
+QuickByte implements several security practices:
+
+- Password hashing with Werkzeug
+- Session-based authentication
+- Admin authorization
+- CSRF protection
+- Parameterized SQL queries
+- User-specific order authorization
+- Environment-based secret configuration
+
+---
+
+## 🔮 Future Improvements
+
+Planned features include:
+
+- 💳 Online payments
+- 🎟️ Coupons and discount codes
+- ⭐ Reviews and ratings
+- ❤️ Favourite restaurants and dishes
+- 🔔 Order notifications
+- 📍 Delivery tracking
+- 📱 Improved mobile experience
+
+---
+
+## 👨‍💻 Author
+
+**Bharath S B**
+
+Built as a full-stack web development project using Flask and SQLite.
+
+---
+
+## ⭐ Project
+
+If you find the project interesting, consider giving the repository a ⭐ on GitHub.
