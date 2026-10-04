@@ -1,5 +1,10 @@
 # 🍔 QuickByte — Food Delivery Web App
 
+## 🚀 Live Demo
+
+🔗 [QuickByte Live Demo](https://quickbyte-oobp.onrender.com/)
+
+
 QuickByte is a full-stack food delivery web application built with **Python, Flask, SQLite, HTML, CSS, and JavaScript**.
 
 The application allows customers to discover restaurants, browse menus, search for food, manage their cart, place Cash on Delivery orders, and track their orders. It also includes a dedicated admin panel for managing restaurants, food items, categories, and orders.
