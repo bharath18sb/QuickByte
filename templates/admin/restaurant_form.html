@@ -1,0 +1,25 @@
+{% extends "admin/_admin_base.html" %}
+{% set active = 'restaurants' %}
+{% block title %}{{ 'Edit' if rest and rest.id else 'Add' }} restaurant{% endblock %}
+{% block admin %}
+<nav class="breadcrumb muted small"><a href="{{ url_for('admin.restaurants') }}">Restaurants</a> / <span>{{ 'Edit' if rest and rest.id else 'New' }}</span></nav>
+<h1 class="admin-title">{{ 'Edit' if rest and rest.id else 'Add' }} restaurant</h1>
+<div class="card form-card">
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Name<input type="text" name="name" value="{{ rest.name if rest else '' }}" required></label>
+    <label>Cuisine<input type="text" name="cuisine" value="{{ rest.cuisine if rest else '' }}" placeholder="e.g. Italian, Pizza"></label>
+    <div class="form-row">
+      <label>Rating<input type="number" name="rating" step="0.1" min="0" max="5" value="{{ rest.rating if rest else '4.0' }}"></label>
+      <label>Delivery time<input type="text" name="delivery_time" value="{{ rest.delivery_time if rest else '' }}" placeholder="e.g. 25-30 min"></label>
+    </div>
+    <label>Image URL<input type="url" name="image" value="{{ rest.image if rest else '' }}" placeholder="https://…"></label>
+    <label>Description<textarea name="description" rows="2">{{ rest.description if rest else '' }}</textarea></label>
+    <label class="checkbox-line"><input type="checkbox" name="active" {{ 'checked' if (not rest) or rest.active }}> Active (visible to customers)</label>
+    <div class="form-actions">
+      <a href="{{ url_for('admin.restaurants') }}" class="btn btn-ghost">Cancel</a>
+      <button type="submit" class="btn btn-primary">Save restaurant</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

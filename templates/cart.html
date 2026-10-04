@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% from "_macros.html" import food_image %}
+{% block title %}Cart{% endblock %}
+{% block content %}
+<section class="container section">
+  <h1 class="page-title">Your cart</h1>
+
+  {% if cart['items'] %}
+  <div class="cart-layout" id="cartLayout">
+    <div class="cart-items">
+      {% if cart.restaurant %}<p class="muted small">Ordering from <strong>{{ cart.restaurant }}</strong></p>{% endif %}
+      {% for line in cart['items'] %}
+        <div class="cart-item" data-id="{{ line.food.id }}" data-price="{{ line.food.price }}">
+          <div class="cart-item-img">{{ food_image(line.food.image, line.food.name, line.food.cat_icon or '🍽️', 'ci-img') }}</div>
+          <div class="cart-item-main">
+            <a href="{{ url_for('main.food', fid=line.food.id) }}" class="cart-item-name">{{ line.food.name }}</a>
+            <div class="muted small">{{ line.food.restaurant_name }}</div>
+            <div class="price">₹{{ '%g' % line.food.price }}</div>
+          </div>
+          <div class="cart-item-actions">
+            <div class="qty-stepper" data-id="{{ line.food.id }}">
+              <button type="button" class="qty-btn cart-dec">−</button>
+              <span class="qty-val">{{ line.qty }}</span>
+              <button type="button" class="qty-btn cart-inc">+</button>
+            </div>
+            <div class="line-total" data-id="{{ line.food.id }}">₹{{ '%g' % line.line_total }}</div>
+            <button type="button" class="cart-remove" data-id="{{ line.food.id }}" aria-label="Remove">🗑</button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <aside class="cart-summary" id="cartSummary">
+      <h3>Order summary</h3>
+      <div class="sum-row"><span>Subtotal</span><span id="sumSubtotal">₹{{ '%g' % cart.subtotal }}</span></div>
+      <div class="sum-row"><span>Delivery fee</span>
+        <span id="sumDelivery">{% if cart.delivery_fee %}₹{{ '%g' % cart.delivery_fee }}{% else %}<span class="free">FREE</span>{% endif %}</span>
+      </div>
+      <div class="sum-note muted small" id="freeNote">
+        {% if cart.delivery_fee %}Add ₹{{ '%g' % (cart.free_above - cart.subtotal) }} more for free delivery{% endif %}
+      </div>
+      <div class="sum-row sum-total"><span>Total</span><span id="sumTotal">₹{{ '%g' % cart.total }}</span></div>
+      <a href="{{ url_for('orders.checkout') }}" class="btn btn-primary btn-block">Proceed to checkout</a>
+      <a href="{{ url_for('main.restaurants') }}" class="btn btn-ghost btn-block">Add more items</a>
+    </aside>
+  </div>
+  {% else %}
+  <div class="empty-state" id="emptyCart">
+    <div class="empty-emoji">🛒</div>
+    <h3>Your cart is empty</h3>
+    <p class="muted">Browse restaurants and add some delicious food.</p>
+    <a href="{{ url_for('main.restaurants') }}" class="btn btn-primary">Browse restaurants</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

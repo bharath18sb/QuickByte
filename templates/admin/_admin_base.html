@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-shell container">
+  <aside class="admin-sidebar">
+    <h2 class="admin-brand">⚙ Admin</h2>
+    <nav>
+      <a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if active == 'dashboard' }}">📊 Dashboard</a>
+      <a href="{{ url_for('admin.restaurants') }}" class="{{ 'active' if active == 'restaurants' }}">🏪 Restaurants</a>
+      <a href="{{ url_for('admin.food') }}" class="{{ 'active' if active == 'food' }}">🍔 Food items</a>
+      <a href="{{ url_for('admin.categories') }}" class="{{ 'active' if active == 'categories' }}">🏷 Categories</a>
+      <a href="{{ url_for('admin.orders') }}" class="{{ 'active' if active == 'orders' }}">📦 Orders</a>
+      <a href="{{ url_for('main.index') }}">↩ Back to site</a>
+    </nav>
+  </aside>
+  <div class="admin-content">
+    {% block admin %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

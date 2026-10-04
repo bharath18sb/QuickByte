@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% from "_macros.html" import restaurant_card %}
+{% block title %}Restaurants{% endblock %}
+{% block content %}
+<section class="container section">
+  <h1 class="page-title">
+    {% if category %}{{ category }} restaurants{% elif q %}Results for “{{ q }}”{% else %}All restaurants{% endif %}
+  </h1>
+
+  <div class="filter-bar">
+    <a href="{{ url_for('main.restaurants') }}" class="chip {{ 'active' if not category }}">All</a>
+    {% for c in nav_categories %}
+      <a href="{{ url_for('main.restaurants', category=c.name) }}"
+         class="chip {{ 'active' if category == c.name }}">{{ c.icon }} {{ c.name }}</a>
+    {% endfor %}
+  </div>
+
+  {% if restaurants %}
+    <div class="grid grid-rest">
+      {% for r in restaurants %}{{ restaurant_card(r) }}{% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-emoji">🍽️</div>
+      <h3>No restaurants found</h3>
+      <p class="muted">Try a different category or search term.</p>
+      <a href="{{ url_for('main.restaurants') }}" class="btn btn-primary">View all</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

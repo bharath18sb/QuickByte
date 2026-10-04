@@ -1,0 +1,35 @@
+{% extends "admin/_admin_base.html" %}
+{% from "_macros.html" import status_badge %}
+{% set active = 'orders' %}
+{% block title %}Orders{% endblock %}
+{% block admin %}
+<h1 class="admin-title">Orders</h1>
+<div class="filter-bar">
+  <a href="{{ url_for('admin.orders') }}" class="chip {{ 'active' if not status }}">All</a>
+  {% for s in ORDER_STATUSES %}
+    <a href="{{ url_for('admin.orders', status=s) }}" class="chip {{ 'active' if status == s }}">{{ s|title }}</a>
+  {% endfor %}
+</div>
+<div class="card">
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>ID</th><th>Customer</th><th>Total</th><th>Payment</th><th>Status</th><th>Date</th><th></th></tr></thead>
+      <tbody>
+        {% for o in orders %}
+        <tr>
+          <td>#{{ o.id }}</td>
+          <td>{{ o.customer }}</td>
+          <td>₹{{ '%g' % o.total }}</td>
+          <td class="muted small">{{ o.payment_method }}</td>
+          <td>{{ status_badge(o.status) }}</td>
+          <td class="muted small">{{ o.created_at }}</td>
+          <td><a href="{{ url_for('admin.order_details', oid=o.id) }}" class="btn btn-ghost btn-sm">Manage</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="7" class="muted">No orders found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

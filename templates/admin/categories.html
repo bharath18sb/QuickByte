@@ -1,0 +1,41 @@
+{% extends "admin/_admin_base.html" %}
+{% set active = 'categories' %}
+{% block title %}Categories{% endblock %}
+{% block admin %}
+<h1 class="admin-title">Categories</h1>
+<div class="two-col">
+  <div class="card form-card">
+    <h3>Add category</h3>
+    <form method="post" action="{{ url_for('admin.categories') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label>Name<input type="text" name="name" required placeholder="e.g. Salads"></label>
+      <label>Emoji icon<input type="text" name="icon" maxlength="4" placeholder="🥗"></label>
+      <button type="submit" class="btn btn-primary btn-block">Add category</button>
+    </form>
+  </div>
+  <div class="card">
+    <h3>All categories</h3>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>Icon</th><th>Name</th><th>Items</th><th></th></tr></thead>
+        <tbody>
+          {% for c in categories %}
+          <tr>
+            <td class="cat-emoji">{{ c.icon }}</td>
+            <td><strong>{{ c.name }}</strong></td>
+            <td class="muted">{{ c.food_count }}</td>
+            <td class="actions">
+              <form method="post" action="{{ url_for('admin.category_delete', cid=c.id) }}" class="inline"
+                    onsubmit="return confirm('Delete category {{ c.name }}? Items will become uncategorised.');">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button class="btn btn-danger btn-sm">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

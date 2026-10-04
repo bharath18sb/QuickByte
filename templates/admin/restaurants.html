@@ -1,0 +1,36 @@
+{% extends "admin/_admin_base.html" %}
+{% from "_macros.html" import food_image %}
+{% set active = 'restaurants' %}
+{% block title %}Restaurants{% endblock %}
+{% block admin %}
+<div class="admin-title-row">
+  <h1 class="admin-title">Restaurants</h1>
+  <a href="{{ url_for('admin.restaurant_form') }}" class="btn btn-primary">+ Add restaurant</a>
+</div>
+<div class="card">
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th></th><th>Name</th><th>Cuisine</th><th>Rating</th><th>Delivery</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        {% for r in restaurants %}
+        <tr>
+          <td>{{ food_image(r.image, r.name, '🍴', 'thumb') }}</td>
+          <td><strong>{{ r.name }}</strong></td>
+          <td class="muted">{{ r.cuisine }}</td>
+          <td>★ {{ '%.1f' % r.rating }}</td>
+          <td class="muted">{{ r.delivery_time }}</td>
+          <td>{% if r.active %}<span class="pill pill-on">Active</span>{% else %}<span class="pill pill-off">Hidden</span>{% endif %}</td>
+          <td class="actions">
+            <a href="{{ url_for('admin.restaurant_form', rid=r.id) }}" class="btn btn-ghost btn-sm">Edit</a>
+            <form method="post" action="{{ url_for('admin.restaurant_toggle', rid=r.id) }}" class="inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+              <button class="btn btn-ghost btn-sm">{{ 'Hide' if r.active else 'Show' }}</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

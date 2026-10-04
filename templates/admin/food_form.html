@@ -1,0 +1,43 @@
+{% extends "admin/_admin_base.html" %}
+{% set active = 'food' %}
+{% block title %}{{ 'Edit' if item else 'Add' }} food item{% endblock %}
+{% block admin %}
+<nav class="breadcrumb muted small"><a href="{{ url_for('admin.food') }}">Food items</a> / <span>{{ 'Edit' if item else 'New' }}</span></nav>
+<h1 class="admin-title">{{ 'Edit' if item else 'Add' }} food item</h1>
+<div class="card form-card">
+  <form method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Name<input type="text" name="name" value="{{ item.name if item else '' }}" required></label>
+    <div class="form-row">
+      <label>Restaurant
+        <select name="restaurant_id" required>
+          <option value="">Select…</option>
+          {% for r in restaurants %}
+            <option value="{{ r.id }}" {{ 'selected' if item and item.restaurant_id == r.id }}>{{ r.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Category
+        <select name="category_id">
+          <option value="">Uncategorised</option>
+          {% for c in categories %}
+            <option value="{{ c.id }}" {{ 'selected' if item and item.category_id == c.id }}>{{ c.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+    <label>Price (₹)<input type="number" name="price" step="1" min="0" value="{{ '%g' % item.price if item else '' }}" required></label>
+    <label>Image URL<input type="url" name="image" value="{{ item.image if item else '' }}" placeholder="https://…"></label>
+    <label>Description<textarea name="description" rows="2">{{ item.description if item else '' }}</textarea></label>
+    <div class="checkbox-row">
+      <label class="checkbox-line"><input type="checkbox" name="is_veg" {{ 'checked' if (not item) or item.is_veg }}> Vegetarian</label>
+      <label class="checkbox-line"><input type="checkbox" name="popular" {{ 'checked' if item and item.popular }}> Popular</label>
+      <label class="checkbox-line"><input type="checkbox" name="active" {{ 'checked' if (not item) or item.active }}> Active</label>
+    </div>
+    <div class="form-actions">
+      <a href="{{ url_for('admin.food') }}" class="btn btn-ghost">Cancel</a>
+      <button type="submit" class="btn btn-primary">Save item</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% from "_macros.html" import food_image %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<section class="container section">
+  <h1 class="page-title">Checkout</h1>
+  <div class="checkout-layout">
+    <form method="post" action="{{ url_for('orders.checkout') }}" class="checkout-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+      <div class="card">
+        <h3>Delivery details</h3>
+        <label>Full name
+          <input type="text" name="full_name" value="{{ form.full_name or current_user.name }}" required>
+        </label>
+        <label>Phone number
+          <input type="tel" name="phone" value="{{ form.phone or '' }}" pattern="[0-9]{7,15}" placeholder="10-digit mobile number" required>
+        </label>
+        <label>Delivery address
+          <textarea name="address" rows="2" placeholder="House no, street, area" required>{{ form.address or '' }}</textarea>
+        </label>
+        <div class="form-row">
+          <label>City<input type="text" name="city" value="{{ form.city or '' }}" required></label>
+          <label>Postal code<input type="text" name="postal_code" value="{{ form.postal_code or '' }}" required></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Payment method</h3>
+        <label class="radio-line">
+          <input type="radio" name="payment_method" value="Cash on Delivery" checked>
+          <span>💵 Cash on Delivery</span>
+        </label>
+        <p class="muted small">Online payment coming soon. Pay with cash when your order arrives.</p>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg">Place order · ₹{{ '%g' % cart.total }}</button>
+    </form>
+
+    <aside class="cart-summary">
+      <h3>Order summary</h3>
+      <div class="summary-items">
+        {% for line in cart['items'] %}
+          <div class="summary-line">
+            <div class="summary-img">{{ food_image(line.food.image, line.food.name, line.food.cat_icon or '🍽️', 'sum-img') }}</div>
+            <span class="summary-name">{{ line.food.name }} <b>× {{ line.qty }}</b></span>
+            <span>₹{{ '%g' % line.line_total }}</span>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="sum-row"><span>Subtotal</span><span>₹{{ '%g' % cart.subtotal }}</span></div>
+      <div class="sum-row"><span>Delivery fee</span>
+        <span>{% if cart.delivery_fee %}₹{{ '%g' % cart.delivery_fee }}{% else %}<span class="free">FREE</span>{% endif %}</span>
+      </div>
+      <div class="sum-row sum-total"><span>Total</span><span>₹{{ '%g' % cart.total }}</span></div>
+    </aside>
+  </div>
+</section>
+{% endblock %}

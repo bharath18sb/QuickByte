@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Admin login{% endblock %}
+{% block content %}
+<section class="container auth-wrap">
+  <div class="auth-card">
+    <h1>⚙ Admin login</h1>
+    <p class="muted">Sign in to manage Quickbyte.</p>
+    <form method="post" action="{{ url_for('admin.login') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label>Email<input type="email" name="email" value="admin@quickbyte.com" required autofocus></label>
+      <label>Password<input type="password" name="password" required></label>
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+    <div class="demo-note"><strong>Demo admin</strong><br>admin@quickbyte.com / admin123</div>
+  </div>
+</section>
+{% endblock %}

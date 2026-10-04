@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% from "_macros.html" import status_timeline, status_badge %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block content %}
+<section class="container section">
+  <nav class="breadcrumb muted small">
+    <a href="{{ url_for('orders.my_orders') }}">My orders</a> / <span>Order #{{ order.id }}</span>
+  </nav>
+  <div class="order-head">
+    <h1 class="page-title">Order #{{ order.id }}</h1>
+    {{ status_badge(order.status) }}
+  </div>
+  <p class="muted small">Placed on {{ order.created_at }}</p>
+
+  <div class="card">
+    <h3>Status</h3>
+    {{ status_timeline(order.status) }}
+  </div>
+
+  <div class="order-grid">
+    <div class="card">
+      <h3>Items</h3>
+      {% for it in items %}
+        <div class="order-line">
+          <span>{{ it.food_name }} <b>× {{ it.quantity }}</b></span>
+          <span>₹{{ '%g' % (it.price * it.quantity) }}</span>
+        </div>
+      {% endfor %}
+      <div class="sum-row"><span>Subtotal</span><span>₹{{ '%g' % order.subtotal }}</span></div>
+      <div class="sum-row"><span>Delivery</span><span>{% if order.delivery_fee %}₹{{ '%g' % order.delivery_fee }}{% else %}FREE{% endif %}</span></div>
+      <div class="sum-row sum-total"><span>Total</span><span>₹{{ '%g' % order.total }}</span></div>
+    </div>
+    <div class="card">
+      <h3>Delivery address</h3>
+      <p>{{ order.full_name }}<br>{{ order.phone }}<br>{{ order.address }}<br>{{ order.city }} - {{ order.postal_code }}</p>
+      <p class="muted small">Payment: {{ order.payment_method }}</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

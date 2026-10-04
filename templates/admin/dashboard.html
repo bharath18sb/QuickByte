@@ -1,0 +1,37 @@
+{% extends "admin/_admin_base.html" %}
+{% from "_macros.html" import status_badge %}
+{% set active = 'dashboard' %}
+{% block title %}Dashboard{% endblock %}
+{% block admin %}
+<h1 class="admin-title">Dashboard</h1>
+<div class="stat-grid">
+  <div class="stat-card"><div class="stat-emoji">👥</div><div><div class="stat-num">{{ stats.users }}</div><div class="muted">Customers</div></div></div>
+  <div class="stat-card"><div class="stat-emoji">🏪</div><div><div class="stat-num">{{ stats.restaurants }}</div><div class="muted">Restaurants</div></div></div>
+  <div class="stat-card"><div class="stat-emoji">🍔</div><div><div class="stat-num">{{ stats.foods }}</div><div class="muted">Food items</div></div></div>
+  <div class="stat-card"><div class="stat-emoji">📦</div><div><div class="stat-num">{{ stats.orders }}</div><div class="muted">Orders</div></div></div>
+  <div class="stat-card wide"><div class="stat-emoji">💰</div><div><div class="stat-num">₹{{ '%g' % stats.revenue }}</div><div class="muted">Total revenue</div></div></div>
+</div>
+
+<div class="card">
+  <div class="card-head"><h3>Recent orders</h3><a href="{{ url_for('admin.orders') }}" class="see-all">View all →</a></div>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th><th></th></tr></thead>
+      <tbody>
+        {% for o in recent %}
+        <tr>
+          <td>#{{ o.id }}</td>
+          <td>{{ o.customer }}</td>
+          <td>₹{{ '%g' % o.total }}</td>
+          <td>{{ status_badge(o.status) }}</td>
+          <td class="muted small">{{ o.created_at }}</td>
+          <td><a href="{{ url_for('admin.order_details', oid=o.id) }}" class="btn btn-ghost btn-sm">View</a></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="muted">No orders yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

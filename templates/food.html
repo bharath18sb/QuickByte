@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% from "_macros.html" import food_card, food_image, veg_badge %}
+{% block title %}{{ item.name }}{% endblock %}
+{% block content %}
+<section class="container section">
+  <nav class="breadcrumb muted small">
+    <a href="{{ url_for('main.index') }}">Home</a> /
+    <a href="{{ url_for('main.restaurant', rid=item.r_id) }}">{{ item.restaurant_name }}</a> /
+    <span>{{ item.name }}</span>
+  </nav>
+
+  <div class="food-detail">
+    <div class="food-detail-img">
+      {{ food_image(item.image, item.name, item.cat_icon or '🍽️', 'detail-img') }}
+    </div>
+    <div class="food-detail-info">
+      <div class="food-detail-title">{{ veg_badge(item.is_veg) }} <h1>{{ item.name }}</h1></div>
+      <a href="{{ url_for('main.restaurant', rid=item.r_id) }}" class="muted">
+        from {{ item.restaurant_name }} · ★ {{ '%.1f' % item.r_rating }} · 🕒 {{ item.delivery_time }}
+      </a>
+      <p class="food-detail-desc">{{ item.description }}</p>
+      <div class="food-detail-price">₹{{ '%g' % item.price }}</div>
+
+      <form class="add-to-cart-form qty-add" method="post" action="{{ url_for('main.cart_add_route') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="food_id" value="{{ item.id }}">
+        <div class="qty-stepper">
+          <button type="button" class="qty-btn" data-step="-1">−</button>
+          <input type="number" name="qty" value="1" min="1" max="20" class="qty-input">
+          <button type="button" class="qty-btn" data-step="1">+</button>
+        </div>
+        <button type="submit" class="btn btn-primary">Add to cart</button>
+      </form>
+    </div>
+  </div>
+
+  {% if related %}
+    <h2 class="section-title">More from {{ item.restaurant_name }}</h2>
+    <div class="grid grid-food">
+      {% for r in related %}{{ food_card(r) }}{% endfor %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

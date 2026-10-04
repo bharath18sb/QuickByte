@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "_macros.html" import status_badge %}
+{% block title %}My orders{% endblock %}
+{% block content %}
+<section class="container section">
+  <h1 class="page-title">My orders</h1>
+
+  {% if orders %}
+    <div class="order-list">
+      {% for o in orders %}
+        <a href="{{ url_for('orders.order_details', oid=o.id) }}" class="order-row">
+          <div>
+            <div class="order-row-id">Order #{{ o.id }}</div>
+            <div class="muted small">{{ o.created_at }} · {{ o.item_count }} item{{ '' if o.item_count == 1 else 's' }}</div>
+          </div>
+          <div class="order-row-right">
+            <span class="price">₹{{ '%g' % o.total }}</span>
+            {{ status_badge(o.status) }}
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-emoji">🧾</div>
+      <h3>No orders yet</h3>
+      <p class="muted">When you place an order it will show up here.</p>
+      <a href="{{ url_for('main.restaurants') }}" class="btn btn-primary">Start ordering</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

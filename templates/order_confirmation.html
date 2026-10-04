@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% from "_macros.html" import status_timeline %}
+{% block title %}Order confirmed{% endblock %}
+{% block content %}
+<section class="container section">
+  <div class="confirm-hero">
+    <div class="confirm-check">✓</div>
+    <h1>Order placed!</h1>
+    <p class="muted">Thank you, {{ order.full_name }}. Your order <strong>#{{ order.id }}</strong> has been received.</p>
+  </div>
+
+  <div class="card confirm-card">
+    <h3>Order status</h3>
+    {{ status_timeline(order.status) }}
+  </div>
+
+  <div class="order-grid">
+    <div class="card">
+      <h3>Items</h3>
+      {% for it in items %}
+        <div class="order-line">
+          <span>{{ it.food_name }} <b>× {{ it.quantity }}</b></span>
+          <span>₹{{ '%g' % (it.price * it.quantity) }}</span>
+        </div>
+      {% endfor %}
+      <div class="sum-row"><span>Subtotal</span><span>₹{{ '%g' % order.subtotal }}</span></div>
+      <div class="sum-row"><span>Delivery</span><span>{% if order.delivery_fee %}₹{{ '%g' % order.delivery_fee }}{% else %}FREE{% endif %}</span></div>
+      <div class="sum-row sum-total"><span>Total</span><span>₹{{ '%g' % order.total }}</span></div>
+    </div>
+    <div class="card">
+      <h3>Delivering to</h3>
+      <p>{{ order.full_name }}<br>{{ order.phone }}<br>{{ order.address }}<br>{{ order.city }} - {{ order.postal_code }}</p>
+      <p class="muted small">Payment: {{ order.payment_method }}</p>
+    </div>
+  </div>
+
+  <div class="confirm-actions">
+    <a href="{{ url_for('orders.order_details', oid=order.id) }}" class="btn btn-ghost">Track order</a>
+    <a href="{{ url_for('main.restaurants') }}" class="btn btn-primary">Order more</a>
+  </div>
+</section>
+{% endblock %}

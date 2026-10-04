@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "_macros.html" import food_card %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<section class="container section">
+  <form class="page-search" action="{{ url_for('main.search') }}" method="get">
+    <input type="search" name="q" value="{{ q }}" placeholder="Search for food, cuisine or restaurant…" autofocus>
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+  {% if q %}
+    <h1 class="page-title">{{ results|length }} result{{ '' if results|length == 1 else 's' }} for “{{ q }}”</h1>
+    {% if results %}
+      <div class="grid grid-food">
+        {% for item in results %}{{ food_card(item) }}{% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-emoji">🔍</div>
+        <h3>No dishes found</h3>
+        <p class="muted">Try “pizza”, “biryani” or “dessert”.</p>
+      </div>
+    {% endif %}
+  {% else %}
+    <div class="empty-state">
+      <div class="empty-emoji">🍕</div>
+      <h3>Search for something tasty</h3>
+      <p class="muted">Find dishes across all restaurants.</p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "admin/_admin_base.html" %}
+{% from "_macros.html" import status_badge %}
+{% set active = 'orders' %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block admin %}
+<nav class="breadcrumb muted small"><a href="{{ url_for('admin.orders') }}">Orders</a> / <span>#{{ order.id }}</span></nav>
+<div class="admin-title-row">
+  <h1 class="admin-title">Order #{{ order.id }} {{ status_badge(order.status) }}</h1>
+</div>
+<p class="muted small">Placed {{ order.created_at }}</p>
+
+<div class="order-grid">
+  <div class="card">
+    <h3>Items</h3>
+    {% for it in items %}
+      <div class="order-line"><span>{{ it.food_name }} <b>× {{ it.quantity }}</b></span><span>₹{{ '%g' % (it.price * it.quantity) }}</span></div>
+    {% endfor %}
+    <div class="sum-row"><span>Subtotal</span><span>₹{{ '%g' % order.subtotal }}</span></div>
+    <div class="sum-row"><span>Delivery</span><span>₹{{ '%g' % order.delivery_fee }}</span></div>
+    <div class="sum-row sum-total"><span>Total</span><span>₹{{ '%g' % order.total }}</span></div>
+  </div>
+  <div class="card">
+    <h3>Customer</h3>
+    <p>{{ order.customer }}<br><span class="muted small">{{ order.customer_email }}</span></p>
+    <h3>Delivery address</h3>
+    <p>{{ order.full_name }}<br>{{ order.phone }}<br>{{ order.address }}<br>{{ order.city }} - {{ order.postal_code }}</p>
+    <p class="muted small">Payment: {{ order.payment_method }}</p>
+
+    <h3>Update status</h3>
+    <form method="post" action="{{ url_for('admin.order_status', oid=order.id) }}" class="status-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <select name="status">
+        {% for s in ORDER_STATUSES %}
+          <option value="{{ s }}" {{ 'selected' if order.status == s }}>{{ s|title }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% from "_macros.html" import food_card, restaurant_card %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <h1>Delicious food,<br><span class="accent">delivered fast.</span></h1>
+      <p>Order from your favourite restaurants and get fresh meals at your doorstep in minutes.</p>
+      <form class="hero-search" action="{{ url_for('main.search') }}" method="get">
+        <input type="search" name="q" placeholder="Search for pizza, biryani, sushi…">
+        <button type="submit" class="btn btn-primary">Find Food</button>
+      </form>
+      <div class="hero-quick">
+        <span>Popular:</span>
+        <a href="{{ url_for('main.search', q='Pizza') }}">Pizza</a>
+        <a href="{{ url_for('main.search', q='Burger') }}">Burger</a>
+        <a href="{{ url_for('main.search', q='Biryani') }}">Biryani</a>
+        <a href="{{ url_for('main.search', q='Sushi') }}">Sushi</a>
+      </div>
+    </div>
+    <div class="hero-img" aria-hidden="true">🍜🍕🍔🍣</div>
+  </div>
+</section>
+
+<section class="container section">
+  <h2 class="section-title">What are you craving?</h2>
+  <div class="category-row">
+    {% for c in categories %}
+      <a href="{{ url_for('main.restaurants', category=c.name) }}" class="category-chip">
+        <span class="category-emoji">{{ c.icon }}</span>
+        <span>{{ c.name }}</span>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <h2 class="section-title">Featured restaurants</h2>
+    <a href="{{ url_for('main.restaurants') }}" class="see-all">See all →</a>
+  </div>
+  <div class="grid grid-rest">
+    {% for r in featured %}{{ restaurant_card(r) }}{% endfor %}
+  </div>
+</section>
+
+<section class="container section">
+  <h2 class="section-title">Popular right now 🔥</h2>
+  <div class="grid grid-food">
+    {% for item in popular %}{{ food_card(item) }}{% endfor %}
+  </div>
+</section>
+
+<section class="container section">
+  <div class="promo">
+    <div>
+      <h2>Free delivery on orders over ₹500</h2>
+      <p class="muted">Load up your cart and skip the delivery fee.</p>
+    </div>
+    <a href="{{ url_for('main.restaurants') }}" class="btn btn-primary">Start ordering</a>
+  </div>
+</section>
+{% endblock %}
